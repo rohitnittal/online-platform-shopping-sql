@@ -1,0 +1,66 @@
+-- Create the database
+CREATE DATABASE online_shopping;
+
+-- Use the database
+USE online_shopping;
+
+-- Create the tables
+CREATE TABLE products (
+  product_id INT PRIMARY KEY,
+  name VARCHAR(255),
+  description TEXT,
+  price DECIMAL(10, 2),
+  stock INT
+);
+
+CREATE TABLE customers (
+  customer_id INT PRIMARY KEY,
+  name VARCHAR(255),
+  email VARCHAR(255),
+  phone VARCHAR(20)
+);
+
+CREATE TABLE orders (
+  order_id INT PRIMARY KEY,
+  customer_id INT,
+  order_date DATE,
+  total DECIMAL(10, 2),
+  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+CREATE TABLE order_items (
+  order_item_id INT PRIMARY KEY,
+  order_id INT,
+  product_id INT,
+  quantity INT,
+  subtotal DECIMAL(10, 2),
+  FOREIGN KEY (order_id) REFERENCES orders(order_id),
+  FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+-- Insert some sample data
+INSERT INTO products (product_id, name, description, price, stock)
+VALUES
+  (1, 'Apple iPhone 13', 'Latest iPhone model with 128GB storage', 999.99, 10),
+  (2, 'Samsung TV 4K', '55-inch 4K smart TV with HDR', 1299.99, 5),
+  (3, 'Nike Air Jordan', 'Men\'s basketball shoes with sleek design', 149.99, 20),
+  (4, 'Canon EOS Camera', 'Digital SLR camera with 18MP sensor', 799.99, 15);
+
+INSERT INTO customers (customer_id, name, email, phone)
+VALUES
+  (1, 'John Doe', 'johndoe@example.com', '123-456-7890'),
+  (2, 'Jane Smith', 'janesmith@example.com', '098-765-4321'),
+  (3, 'Bob Johnson', 'bobjohnson@example.com', '555-123-4567');
+
+INSERT INTO orders (order_id, customer_id, order_date, total)
+VALUES
+  (1, 1, '2022-01-01', 1999.98),
+  (2, 2, '2022-01-15', 1299.99),
+  (3, 1, '2022-02-01', 299.99);
+
+INSERT INTO order_items (order_item_id, order_id, product_id, quantity, subtotal)
+VALUES
+  (1, 1, 1, 1, 999.99),
+  (2, 1, 2, 1, 1299.99),
+  (3, 2, 3, 2, 299.98),
+  (4, 3, 4, 1, 799.99);
